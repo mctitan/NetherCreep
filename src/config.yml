@@ -1,0 +1,5 @@
+NetherCreep.flowdelay: 36000000000
+NetherCreep.maxDistance: 100
+NetherCreep.maxTries: 6
+NetherCreep.spongeDistance: 5
+NetherCreep.recursionDepth: 1000

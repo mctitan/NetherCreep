@@ -1,0 +1,4 @@
+name: Nether Creep
+main: net.mctitan.fluid.NetherCreep
+version: 1.0
+depend: [FluidFlow]
