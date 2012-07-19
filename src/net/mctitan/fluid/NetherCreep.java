@@ -13,7 +13,6 @@ public class NetherCreep extends Fluid {
                                  BlockFace.NORTH, BlockFace.SOUTH,
                                  BlockFace.EAST, BlockFace.WEST};
     private BlockFace[] up = {BlockFace.UP};
-    private long flow = 10L*1000L*1000L*1000L;
     private long maxDistance = 100;
     private long maxTries = 6;
     private long spongeDistance = 5;
@@ -34,8 +33,8 @@ public class NetherCreep extends Fluid {
         int bit = 1;
         long tries;
         
-        while(fb.data != null && ((Data)fb.data).time > System.nanoTime())
-            try{Thread.sleep(0, 1000);}catch(Exception e) {} //sleeps 1 micro-second
+        //while(fb.data != null && ((Data)fb.data).time > System.nanoTime())
+            //try{Thread.sleep(0, 1000);}catch(Exception e) {} //sleeps 1 micro-second
         
         //if the material of the block is not correct, do nothing
         temp = getType(fb);
@@ -130,6 +129,11 @@ public class NetherCreep extends Fluid {
             setType(above, Material.FIRE);
         else if(temp == Material.SNOW)
             setType(above, Material.AIR);
+        else if(temp == Material.VINE) {
+            setType(above, Material.AIR);
+            for(FluidBlock fb : above.getBlockFaces(faces))
+                changeAbove(fb, distance+1);
+        }
     }
     
     @Override
@@ -146,7 +150,7 @@ public class NetherCreep extends Fluid {
         if(distance >= maxDistance)
             return;
         
-        to.data = new Data(flow, distance);
+        to.data = new Data(distance);
         super.addFlow(to);
     }
 
@@ -158,7 +162,6 @@ public class NetherCreep extends Fluid {
         random = new Random(System.nanoTime());
         
         //read in configuration file
-        flow = getConfig().getLong("NetherCreep.flowdelay");
         maxDistance = getConfig().getLong("NetherCreep.maxDistance");
         maxTries = getConfig().getLong("NetherCreep.maxTries");
         spongeDistance = getConfig().getLong("NetherCreep.spongeDistance");
